@@ -1,2 +1,6 @@
 ---
 # handlers file for jira
+
+- name: restart jira
+  service: name={{ jira_service_name }} state=restarted
+  tags: jira
