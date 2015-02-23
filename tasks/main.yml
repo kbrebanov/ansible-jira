@@ -95,6 +95,16 @@
   notify: restart jira
   tags: jira
 
+- name: Create JIRA setenv.sh
+  template: >
+    src=setenv.sh.j2
+    dest={{ jira_install_dir }}/bin/setenv.sh
+    owner=root
+    group=root
+    mode=0755
+  notify: restart jira
+  tags: jira
+
 - name: Ensure JIRA service is started and enabled on boot
   service: name={{ jira_service_name }} pattern={{ jira_install_dir }}/jre//bin/java state=started enabled=yes
   tags: jira
