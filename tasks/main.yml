@@ -33,7 +33,7 @@
   file: >
     path={{ jira_binary_path }}
     mode=0744
-    state=touch
+    state=file
   tags: jira
 
 - name: Create JIRA unattended response file
