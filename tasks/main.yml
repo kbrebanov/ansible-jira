@@ -46,7 +46,7 @@
   command: "{{ jira_binary_path }} -q -varfile {{ jira_response_path }}"
   args:
     chdir: "{{ jira_work_dir }}/"
-    creates: jira_installed
+    creates: "{{ jira_work_dir }}/jira_installed"
   tags: jira
 
 - name: Create JIRA database
@@ -96,5 +96,5 @@
   tags: jira
 
 - name: Ensure JIRA service is started and enabled on boot
-  service: name={{ jira_service_name }} state=started enabled=yes
+  service: name={{ jira_service_name }} pattern={{ jira_install_dir }}/jre//bin/java state=started enabled=yes
   tags: jira
