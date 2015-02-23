@@ -46,7 +46,7 @@
   command: "{{ jira_binary_path }} -q -varfile {{ jira_response_path }}"
   args:
     chdir: "{{ jira_work_dir }}/"
-    creates: "{{ jira_work_dir }}/jira_installed"
+    creates: "{{ jira_install_dir }}/uninstall"
   tags: jira
 
 - name: Create JIRA database
