@@ -68,21 +68,21 @@
 - name: Download MySQL Java connector
   get_url: >
     url={{ jira_mysql_connector_url }}
-    dest={{ jira_work_dir }}/{{ jira_mysql_connector }}
+    dest={{ jira_work_dir }}/{{ jira_mysql_connector_archive }}
     sha256sum={{ jira_mysql_connector_sha256sum }}
   tags: jira
 
 - name: Unarchive MySQL Java connector
   unarchive: >
-    src={{ jira_work_dir }}/{{ jira_mysql_connector }}
+    src={{ jira_work_dir }}/{{ jira_mysql_connector_archive }}
     dest={{ jira_work_dir }}/
     copy=no
   tags: jira
 
 - name: Copy MySQL Java connector file
-  command: cp {{ jira_work_dir }}/mysql-connector-java-5.1.34/mysql-connector-java-5.1.34-bin.jar {{ jira_install_dir }}/lib/
+  command: cp {{ jira_work_dir }}/{{ jira_mysql_connector }}/{{ jira_mysql_connector }}-bin.jar {{ jira_install_dir }}/lib/
   args:
-    creates: "{{ jira_install_dir }}/lib/mysql-connector-java-5.1.34-bin.jar"
+    creates: "{{ jira_install_dir }}/lib/{{ jira_mysql_connector }}-bin.jar"
   tags: jira
 
 - name: Create JIRA database configuration file
