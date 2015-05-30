@@ -1,6 +1,8 @@
 jira
 ====
 
+[![Ansible Galaxy](https://img.shields.io/badge/galaxy-kbrebanov.jira-660198.svg)](https://galaxy.ansible.com/list#/roles/3981)
+
 Installs JIRA.
 
 Requirements
