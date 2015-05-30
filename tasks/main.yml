@@ -13,6 +13,20 @@
   when: ansible_distribution == "Ubuntu"
   tags: jira
 
+- name: Create JIRA group
+  group: name=jira state=present
+  tags: jira
+
+- name: Create JIRA user
+  user: >
+    name=jira
+    group=jira
+    comment="JIRA user"
+    home={{ jira_home_dir }}
+    shell=/bin/bash
+    createhome=no
+  tags: jira
+
 - name: Create JIRA working directory
   file: >
     path={{ jira_work_dir }}
@@ -22,89 +36,72 @@
     state=directory
   tags: jira
 
+- name: Create JIRA install directory
+  file: >
+    path={{ jira_install_dir }}
+    owner=jira
+    group=jira
+    mode=0755
+    state=directory
+  tags: jira
+
+- name: Create JIRA home directory
+  file: >
+    path={{ jira_home_dir }}
+    owner=jira
+    group=jira
+    mode=0755
+    state=directory
+  tags: jira
+
 - name: Download JIRA
   get_url: >
     url={{ jira_download_url }}
-    dest={{ jira_work_dir }}/{{ jira_binary }}
-    sha256sum={{ jira_binary_sha256sum }}
+    dest={{ jira_work_dir }}/{{ jira_archive }}
+    sha256sum={{ jira_archive_sha256sum }}
   tags: jira
 
-- name: Ensure the JIRA installation file is executable
-  file: >
-    path={{ jira_binary_path }}
-    mode=0744
-    state=file
-  tags: jira
-
-- name: Create JIRA unattended response file
-  template: >
-    src=jira.response.varfile.j2
-    dest={{ jira_response_path }}
-  tags: jira
-
-- name: Install JIRA in unattended mode
-  command: "{{ jira_binary_path }} -q -varfile {{ jira_response_path }}"
-  args:
-    chdir: "{{ jira_work_dir }}/"
-    creates: "{{ jira_install_dir }}/uninstall"
-  tags: jira
-
-- name: Create JIRA database
-  mysql_db: >
-    name={{ jira_database_name }}
-    collation={{ jira_database_collation }}
-    encoding={{ jira_database_encoding }}
-    state=present
-  tags: jira
-
-- name: Create JIRA database user
-  mysql_user: >
-    name={{ jira_database_user }}
-    password={{ jira_database_user_password }}
-    priv={{ jira_database_user_priv }}
-    state=present
-  tags: jira
-
-- name: Download MySQL Java connector
-  get_url: >
-    url={{ jira_mysql_connector_url }}
-    dest={{ jira_work_dir }}/{{ jira_mysql_connector_archive }}
-    sha256sum={{ jira_mysql_connector_sha256sum }}
-  tags: jira
-
-- name: Unarchive MySQL Java connector
+- name: Extract JIRA to install directory
   unarchive: >
-    src={{ jira_work_dir }}/{{ jira_mysql_connector_archive }}
-    dest={{ jira_work_dir }}/
-    copy=no
-  tags: jira
-
-- name: Copy MySQL Java connector file
-  command: cp {{ jira_work_dir }}/{{ jira_mysql_connector }}/{{ jira_mysql_connector }}-bin.jar {{ jira_install_dir }}/lib/
-  args:
-    creates: "{{ jira_install_dir }}/lib/{{ jira_mysql_connector }}-bin.jar"
-  tags: jira
-
-- name: Create JIRA database configuration file
-  template: >
-    src=dbconfig.xml.j2
-    dest={{ jira_data_dir }}/dbconfig.xml
+    src={{ jira_work_dir }}/{{ jira_archive }}
+    dest={{ jira_install_dir }}
     owner=jira
     group=jira
-    mode=0644
-  notify: restart jira
+    mode=0755
+    copy=no
+    creates={{ jira_install_dir }}/atlassian-jira-{{ jira_version }}-standalone
   tags: jira
 
-- name: Create JIRA setenv.sh
+- name: Create symlink for current version
+  file: >
+    src={{ jira_install_dir }}/atlassian-jira-{{ jira_version }}-standalone
+    dest={{ jira_install_dir }}/current
+    state=link
+  tags: jira
+
+- name: Set JIRA environment settings
   template: >
     src=setenv.sh.j2
-    dest={{ jira_install_dir }}/bin/setenv.sh
-    owner=root
-    group=root
+    dest={{ jira_install_dir }}/atlassian-jira-{{ jira_version }}-standalone/bin/setenv.sh
+    owner=jira
+    group=jira
     mode=0755
   notify: restart jira
   tags: jira
 
+- name: Create JIRA init script
+  template: >
+    src=jira.j2
+    dest=/etc/init.d/jira
+    owner=root
+    group=root
+    mode=0755
+  tags: jira
+
 - name: Ensure JIRA service is started and enabled on boot
-  service: name={{ jira_service_name }} pattern={{ jira_install_dir }}/jre//bin/java state=started enabled=yes
+  service: >
+    name=jira
+    state=started
+    pattern='/usr/bin/java -Djava.util.logging.config.file=/opt/atlassian/jira/atlassian-jira-{{ jira_version }}-standalone/conf/logging.properties'
+    enabled=yes
   tags: jira

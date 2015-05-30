@@ -1,8 +1,9 @@
 # {{ ansible_managed }}
+
 #
 # One way to set the JIRA HOME path is here via this variable.  Simply uncomment it and set a valid path like /jira/home.  You can of course set it outside in the command terminal.  That will also work.
 #
-#JIRA_HOME=""
+JIRA_HOME="{{ jira_home_dir }}"
 
 #
 #  Occasionally Atlassian Support may recommend that you set some specific JVM arguments.  You can use this variable below to do that.
@@ -18,7 +19,7 @@ JVM_MAXIMUM_MEMORY="{{ jira_jvm_maximum_memory }}"
 #
 # The following are the required arguments for JIRA.
 #
-JVM_REQUIRED_ARGS='{{ jira_jvm_required_args }}'
+JVM_REQUIRED_ARGS='-Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -Dorg.dom4j.factory=com.atlassian.core.xml.InterningDocumentFactory'
 
 # Uncomment this setting if you want to import data without notifications
 #

@@ -1,32 +1,7 @@
 ---
 # defaults file for jira
 
-jira_version: 6.3.15
-jira_arch: x64
-jira_binary: atlassian-jira-{{ jira_version }}-{{ jira_arch }}.bin
-jira_binary_sha256sum: a334865dd0b5df5b3bcc506b5c40ab7b65700e310edb6e7e6f86d30c3a8e3375
-jira_download_url: http://www.atlassian.com/software/jira/downloads/binary/{{ jira_binary }}
-jira_work_dir: /opt/atlassian
-jira_response_file: jira.response.varfile
-jira_binary_path: "{{ jira_work_dir }}/{{ jira_binary }}"
-jira_response_path: "{{ jira_work_dir }}/{{ jira_response_file }}"
-jira_run_as_service: true
-jira_install_dir: /opt/atlassian/jira
-jira_data_dir: /var/atlassian/application-data/jira
-jira_rmi_port: 8005
-jira_http_port: 8080
-jira_service_name: jira
-jira_database_name: jira
-jira_database_user: jira
-jira_database_user_password: jira
-jira_database_collation: utf8_bin
-jira_database_encoding: utf8
-jira_database_user_priv: "{{ jira_database_name }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX"
-jira_mysql_connector_version: 5.1.34
-jira_mysql_connector: mysql-connector-java-{{ jira_mysql_connector_version }}
-jira_mysql_connector_archive: "{{ jira_mysql_connector }}.tar.gz"
-jira_mysql_connector_url: http://dev.mysql.com/get/Downloads/Connector-J/{{ jira_mysql_connector_archive }}
-jira_mysql_connector_sha256sum: eb33f5e77bab05b6b27f709da3060302bf1d960fad5ddaaa68c199a72102cc5f
+jira_version: 6.4.5
+jira_archive_sha256sum: b70ff0364e4c9be18b111e476c08aa22f705a1d48890318255874773be3b534a
 jira_jvm_minimum_memory: 384m
 jira_jvm_maximum_memory: 768m
-jira_jvm_required_args: -Djava.awt.headless=true -Datlassian.standalone=JIRA -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -Dorg.dom4j.factory=com.atlassian.core.xml.InterningDocumentFactory

@@ -1,2 +1,8 @@
 ---
 # vars file for jira
+
+jira_archive: atlassian-jira-{{ jira_version }}.tar.gz
+jira_download_url: https://www.atlassian.com/software/jira/downloads/binary/{{ jira_archive }}
+jira_work_dir: /opt/atlassian
+jira_install_dir: /opt/atlassian/jira
+jira_home_dir: /var/atlassian/application-data/jira
