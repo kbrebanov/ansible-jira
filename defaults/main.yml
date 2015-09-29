@@ -1,7 +1,7 @@
 ---
 # defaults file for jira
 
-jira_version: 6.4.5
-jira_archive_sha256sum: b70ff0364e4c9be18b111e476c08aa22f705a1d48890318255874773be3b534a
+jira_version: 6.4.12
+jira_archive_sha256sum: a77cf4c646d3f49d3823a5739daea0827adad1254dae1d1677c629e512a7afd4
 jira_jvm_minimum_memory: 384m
 jira_jvm_maximum_memory: 768m

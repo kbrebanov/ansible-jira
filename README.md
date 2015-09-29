@@ -15,8 +15,8 @@ Role Variables
 
 | Name                    | Default                                                          | Description                 |
 |-------------------------|------------------------------------------------------------------|-----------------------------|
-| jira_version            | 6.4.5                                                            | Version of JIRA to install  |
-| jira_archive_sha256sum  | b70ff0364e4c9be18b111e476c08aa22f705a1d48890318255874773be3b534a | SHA 256 checksum of archive |
+| jira_version            | 6.4.12                                                           | Version of JIRA to install  |
+| jira_archive_sha256sum  | a77cf4c646d3f49d3823a5739daea0827adad1254dae1d1677c629e512a7afd4 | SHA 256 checksum of archive |
 | jira_jvm_minimum_memory | 384m                                                             | JIRA JVM minimum memory     |
 | jira_jvm_maximum_memory | 768m                                                             | JIRA JVM maximum memory     |
 
